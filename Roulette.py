@@ -29,12 +29,10 @@ class Table(object):  # Start with Table as a class, Roulette is going to be a s
 class Roulette(Table):
 #    bet_range = range(0, 36)
 
-#    def minimum_bet(self):  # The function determines the minimum bet for roulette
+#    def minimum_amount(self):  # The function determines the minimum amount to be betted in a roulette game
 #        self.min_amount = random.choice([50, 100, 200])
 
-#    @staticmethod  # Static method is a function decorator to avoid use of an implicit first argument, i.e. self
-
-    def spin_the_wheel(self, bets):  # The function tells which players won (ignoring minimum bet)
+    def spin_the_wheel(self, bets):  # The function tells which players won (ignoring the minimum amount to be betted)
         draw = random.randint(0, 36)
         winning_bets = [bet == draw for bet in bets]
         print("Spinning the wheel...")
@@ -47,12 +45,50 @@ class Roulette(Table):
             print("No player won.")
         return winning_bets
 
-    def simulate_game(self, bets, betted_amounts):  # The function returns the total amount won by the casino and a list with the amounts won by the players
+    def simulate_game(self, bets, betted_amounts):  # The function returns the total amount won by the casino and a list with the amounts won by the players (taking into account the minimum amount to be betted)
         valid_bets = self.above_minimum(betted_amounts)
         winning_bets = self.spin_the_wheel(bets)
         prize_factor = 30
         award = [valid * winning * amount * prize_factor for valid, winning, amount in zip(valid_bets, winning_bets, betted_amounts)]
         profit = sum(betted_amounts) - sum(award)
         return [profit, award]
+
+
+# Create a craps game
+
+class Craps(Table):
+#    bet_range = range(2, 12)
+
+#    def set_minimum(self):
+#        """Randomly sets the minimum bet"""
+#       self.min_amount = random.choice([0, 25, 50])
+
+    def dices(self, n=2):  # The function rolls 2 dices and gives their sum
+        sum_dices = 0
+        for i in range(n):
+            sum_dices += random.randint(1, 6)
+        return sum_dices
+
+    def roll_the_dices(self, bets): # The function tells which players won (ignoring minimum bet)
+        draw = self.dices()
+        winning_bets = [bet == draw for bet in bets]
+        print("Rolling the dices...")
+        print("the dices sum to %s." % str(draw))
+        if any(winning_bets):
+            players = [i for i in enumerate(winning_bets)]
+            print("Players number %s won." % str([x[0] + 1 for x in players if x[1]]))
+        else:
+            print("No player won.")
+        return winning_bets
+
+    def simulate_game(self, bets, betted_amounts): # The function returns the total amount won by the casino and a list with the amounts won by the players (taking into account the minimum amount to be betted)
+        valid_bets = self.above_minimum(betted_amounts)
+        winning_bets = self.roll_the_dices(bets)
+        prize_factor = 30
+        award = [valid * winning * amount * prize_factor for valid, winning, amount in zip(valid_bets, winning_bets, betted_amounts)]
+        profit = sum(betted_amounts) - sum(award)
+        return [profit, award]
+
+
 
 
