@@ -18,7 +18,7 @@ print(table2.simulate_game(bets2, amounts2))
 
 # Create a list that takes the values of 1000 throws of dice pairs
 list_of_values = []
-for i in range(1000):
+for i in range(10):
     list_of_values.append(table2.dices())
 
 print(list_of_values)
