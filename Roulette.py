@@ -84,15 +84,18 @@ class Craps(Table):
             print("No player won.")
         return winning_bets
 
+    def compute_prize_factor(self, bets):  # Compute the prize factor that equally weights the winning probabily for bets on 2 dices and scales it in such away that on average 90% of the money goes back to the players
+        winning_prob = (6 - abs(bets - 7))/36
+        prize_factor = round(0.9/winning_prob)
+        return prize_factor
+
     def simulate_game(self, bets, betted_amounts): # The function returns the total amount won by the casino and a list with the amounts won by the players (taking into account the minimum amount to be betted)
         valid_bets = self.above_minimum(betted_amounts)
         winning_bets = self.roll_the_dices(bets)
         prize_factor = 1
-        award = [valid * winning * amount * prize_factor for valid, winning, amount in zip(valid_bets, winning_bets, betted_amounts)]
+        award = [valid * winning * amount * self.compute_prize_factor(Y) for valid, winning, amount, Y in zip(valid_bets, winning_bets, betted_amounts, bets)]
         profit = sum(betted_amounts) - sum(award)
         return [profit, award]
-
-
 
 
 
