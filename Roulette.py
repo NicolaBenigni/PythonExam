@@ -1,14 +1,16 @@
-# Import libraries called intertools and random
-import itertools
+# Import library called random
 import random
 
 # Fix a seed, say 3456, so that even random draws can be replicated
 random.seed(3456)
 
 # Test whether the seed works correctly: expected random outcome: 7, 8, 5, 3, 9
-five_random_integers = [random.randint(1, 10) for _ in itertools.repeat(None, 5)]
+five_random_integers = [random.randint(1, 10) for i in range(5)]
 print(five_random_integers)
-print("The seed works as expected")
+if five_random_integers == [7, 8, 5, 3, 9]:
+    print("The seed works as expected.")
+else:
+    print("Fix seed.")
 
 
 # Create a roulette game
@@ -63,9 +65,9 @@ class Craps(Table):
 #        """Randomly sets the minimum bet"""
 #       self.min_amount = random.choice([0, 25, 50])
 
-    def dices(self, n=2):  # The function rolls 2 dices and gives their sum
+    def dices(self):  # The function rolls 2 dices and gives their sum
         sum_dices = 0
-        for i in range(n):
+        for i in range(2):
             sum_dices += random.randint(1, 6)
         return sum_dices
 
@@ -74,6 +76,7 @@ class Craps(Table):
         winning_bets = [bet == draw for bet in bets]
         print("Rolling the dices...")
         print("the dices sum to %s." % str(draw))
+        print("There are %s correct bets." % str(sum(winning_bets)))
         if any(winning_bets):
             players = [i for i in enumerate(winning_bets)]
             print("Players number %s won." % str([x[0] + 1 for x in players if x[1]]))
@@ -84,7 +87,7 @@ class Craps(Table):
     def simulate_game(self, bets, betted_amounts): # The function returns the total amount won by the casino and a list with the amounts won by the players (taking into account the minimum amount to be betted)
         valid_bets = self.above_minimum(betted_amounts)
         winning_bets = self.roll_the_dices(bets)
-        prize_factor = 30
+        prize_factor = 1
         award = [valid * winning * amount * prize_factor for valid, winning, amount in zip(valid_bets, winning_bets, betted_amounts)]
         profit = sum(betted_amounts) - sum(award)
         return [profit, award]
