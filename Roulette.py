@@ -52,8 +52,8 @@ class Table(object):  # Start with Table as a class, Roulette is going to be a s
 class Roulette(Table):
     bet_range = range(0, 36)
 
-#    def minimum_amount(self):  # The function determines the minimum amount to be betted in a roulette game
-#        self.min_amount = random.choice([50, 100, 200])
+    def minimum_amount(self):  # The function determines the minimum amount to be betted in a roulette game
+        self.min_amount = random.choice([50, 100, 200])
 
     def spin_the_wheel(self, bets):  # The function tells which customer won (ignoring the minimum amount to be betted)
         draw = random.randint(0, 36)
@@ -82,8 +82,8 @@ class Roulette(Table):
 class Craps(Table):
     bet_range = range(2, 12)
 
-#    def minimum_amount(self):  # The function determines the minimum amount to be betted in a craps game
-#        self.min_amount = random.choice([0, 25, 50])
+    def minimum_amount(self):  # The function determines the minimum amount to be betted in a craps game
+        self.min_amount = random.choice([0, 25, 50])
 
     def dices(self):  # The function rolls 2 dices and gives their sum
         sum_dices = 0
