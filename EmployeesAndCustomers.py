@@ -1,7 +1,8 @@
+# Import necessary libraries
 import random
 from random import randint
 
-# This file contains the function that defines the behaviour and payoffs of employees and customers
+### This file contains the function that defines the behaviour and payoffs of employees and customers
 
 # Create employee as a class and croupier and barman each as a subclass
 
@@ -12,13 +13,15 @@ class Employee(object):
 
 class Croupier(Employee):
     def __init__(self, wage=200, fee=0):
-        super(Croupier, self).__init__(wage)  # This is to inherit the fixed wage defined before, since same for both croupiers and barmen
+        super(Croupier, self).__init__(wage)  # This is to inherit the fixed wage defined before, since same for both
+        # croupiers and barmen
         self.fee = fee
 
 
 class Barman(Employee):
     def __init__(self, wage=200, sales=0, tips=0):
-        super(Barman, self).__init__(wage)  # This is to inherit the fixed wage defined before, since same for both croupiers and barmen
+        super(Barman, self).__init__(wage)  # This is to inherit the fixed wage defined before, since same for both
+        # croupiers and barmen
         self.sales = sales
         self.tips = tips
 
@@ -31,11 +34,11 @@ class Customer(object):
 
     def __init__(self, amount=None, budget=0, drinks=0, tips=0, final_budget=0, barman: Barman=None):
         self.amount = amount  # The amount to be betted is chosen at random according to some rules. It is used in the Roulette file
-        self.final_budget = final_budget  # Amount won by the customer
+        self.final_budget = final_budget  # Amount that the customer takes homes
         self.budget = budget
-        self.drinks = drinks  # Total expenditure on drinks
-        self.tips = tips  # Total tips given
-        self.barman = barman  # Assigned barman
+        self.drinks = drinks  # Expenditure on drinks
+        self.tips = tips  # Tips given
+        self.barman = barman  # The variable tells if a customer has a barman assigned or not
         self.initial_budget = budget  # The initial budget is set at random between an upper and a lower bound
 
     def set_initial_budget(self):  # The function sets the initial budget at random between two bounds
@@ -64,34 +67,32 @@ class Customer(object):
     def set_final_budget(self):  # The function determines the amount won by the customer
         self.final_budget = self.budget - self.initial_budget
 
-
 class Returning(Customer):
     initial_lower_bound = 100
     initial_upper_bound = 300
 
-    def place_random_amount(self, min_amount):  # The function is used in the Roulette file and it bets random amounts for each customers depending on the type of customer
+    def place_amount(self, min_amount):  # The function is used in the Roulette file and it bets random amounts
+        # for each customers depending on the type of customer
         if self.budget >= min_amount:
             self.amount = min_amount
             self.budget -= min_amount
         else:
             self.amount = 0
 
-
 class Onetime (Customer):
     initial_lower_bound = 200
     initial_upper_bound = 300
 
-    def place_random_amount(self, _):
+    def place_amount(self):
         betting = randint(0, round(self.budget/3))
         self.amount = betting
         self.budget -= betting
-
 
 class Bachelor(Customer):
     initial_lower_bound = 200
     initial_upper_bound = 500
 
-    def place_random_amount(self, _):
+    def place_amount(self):
         betting = randint(0, round(self.budget))
         self.amount = betting
         self.budget -= betting
