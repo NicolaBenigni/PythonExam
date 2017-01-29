@@ -55,5 +55,5 @@ print(profit_over_betted_amounts)  # This is here to see the value that should e
 # Print the average share of profit over the betted amounts that the casino cashes in. The result is close to 0.10,
 # which shows the correct programming of the prize factor
 casino_avg_share = round(sum(profit_over_betted_amounts)/len(profit_over_betted_amounts),2)
-print("The average share of profit over betted amounts that the casino chases in is %s" % casino_avg_share)
+print("The average share of profit over betted amounts that the casino cashes in is %s" % casino_avg_share)
 
