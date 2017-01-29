@@ -55,7 +55,8 @@ class Roulette(Table):
     def minimum_amount(self):  # The function determines the minimum amount to be betted in a roulette game
         self.min_amount = random.choice([50, 100, 200])
 
-    def spin_the_wheel(self, bets):  # The function tells which customer won (ignoring the minimum amount to be betted)
+    @staticmethod  # Static method is a function decorator that tells us that the method does not depend on the state of object itself and can be overridden in a subclass
+    def spin_the_wheel(bets):  # The function tells which customer won (ignoring the minimum amount to be betted)
         draw = random.randint(0, 36)
         winning_bets = [bet == draw for bet in bets]
         print("Spinning the wheel...")
@@ -85,7 +86,8 @@ class Craps(Table):
     def minimum_amount(self):  # The function determines the minimum amount to be betted in a craps game
         self.min_amount = random.choice([0, 25, 50])
 
-    def dices(self):  # The function rolls 2 dices and gives their sum
+    @staticmethod  # Static method is a function decorator that tells us that the method does not depend on the state of object itself and can be overridden in a subclass
+    def dices():  # The function rolls 2 dices and gives their sum
         sum_dices = 0
         for i in range(2):
             sum_dices += random.randint(1, 6)
@@ -104,7 +106,8 @@ class Craps(Table):
             print("No player won.")
         return winning_bets
 
-    def compute_prize_factor(self, bets):  # Compute the prize factor that equally weights the winning probabily for bets on 2 dices and scales it in such away that on average 90% of the money goes back to the customers
+    @staticmethod  # Static method is a function decorator that tells us that the method does not depend on the state of object itself and can be overridden in a subclass
+    def compute_prize_factor(bets):  # Compute the prize factor that equally weights the winning probabily for bets on 2 dices and scales it in such away that on average 90% of the money goes back to the customers
         winning_prob = (6 - abs(bets - 7))/36
         prize_factor = round(0.9/winning_prob)
         return prize_factor
