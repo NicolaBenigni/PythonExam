@@ -40,7 +40,7 @@ class Table(object):  # Start with Table as a class, Roulette is going to be a s
         betted_amounts = [x.amount for x in self.customers]  # The function recovers a list of betted amounts per customers
         game_outcome = self.simulate_game(bets, betted_amounts)
         if game_outcome[0] > 0:
-            self.croupier.commission += int(0.005 * game_outcome[0])  # The croupier shares the profit from the game
+            self.croupier.fee += int(0.005 * game_outcome[0])  # The croupier shares the profit from the game, this is their variable wage
             self.profit += int(game_outcome[0] * 0.995)
         else:
             self.profit += game_outcome[0]  # The croupier does not share the losses, the casino has to bear them whole
