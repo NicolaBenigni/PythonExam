@@ -119,6 +119,3 @@ class Craps(Table):
         award = [round(valid * winning * amount * self.compute_prize_factor(Y)) for valid, winning, amount, Y in zip(valid_bets, winning_bets, betted_amounts, bets)]
         profit = sum(betted_amounts) - sum(award)
         return [profit, award]
-
-
-
