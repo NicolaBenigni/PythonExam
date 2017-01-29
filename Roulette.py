@@ -29,7 +29,7 @@ class Table(object):  # Start with Table as a class, Roulette is going to be a s
     def simulate_game(self, bets, betted_amounts):  # The function can take a list of bets and betted amounts and return the amount won by casino and costumers automatically taking into account the type of game played
         print("Simulating game...")
 
-    def place_random_amount(self):  # The function bets random amounts for each customers. The function place_amount is defined in the customers file and depends on the type of customer
+    def place_random_amount(self):  # The function bets random amounts for each customers. The function's element place_amount is defined in the customers file and depends on the type of customer
         [x.place_amount(self.min_amount) for x in self.customers]
 
     bet_range = range(0)  # Just define bet_range. Its true value will be assigned in the subclasses
@@ -37,7 +37,7 @@ class Table(object):  # Start with Table as a class, Roulette is going to be a s
     def simulate_game_round(self):  # The function simulate the round of a game at a table, which include sharing the profit with the croupier, collecting the remaining profit, paying out the awards to the customers
         self.place_random_amount()
         bets = [random.randint(self.bet_range[0], self.bet_range[1]) for _ in self.customers]  # The function randomly chooses bets in the correct bet range for each customer taking into account the type of game played
-        betted_amounts = [x.amount for x in self.customers]  # The function recovers a list of betted amounts per customers
+        betted_amounts = [x.amount for x in self.customers]  # The function recovers a list of betted amounts per customers. The function's element amount is defined in the customers file
         game_outcome = self.simulate_game(bets, betted_amounts)
         if game_outcome[0] > 0:
             self.croupier.fee += int(0.005 * game_outcome[0])  # The croupier shares the profit from the game, this is their variable wage
@@ -119,4 +119,3 @@ class Craps(Table):
         award = [round(valid * winning * amount * self.compute_prize_factor(Y)) for valid, winning, amount, Y in zip(valid_bets, winning_bets, betted_amounts, bets)]
         profit = sum(betted_amounts) - sum(award)
         return [profit, award]
-

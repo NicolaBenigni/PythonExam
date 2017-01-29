@@ -1,5 +1,5 @@
+import random
 from random import randint
-
 
 # This file contains the function that defines the behaviour and payoffs of employees and customers
 
@@ -23,11 +23,46 @@ class Barman(Employee):
         self.tips = tips
 
 
-# Create customers as a class and returning, one-time and bachelor each as a subclass
+# Create customers as a class and returning, onetime and bachelor each as a subclass
 
 class Customer(object):
     initial_lower_bound = 0
     initial_upper_bound = 0
+
+    def __init__(self, amount=None, budget=0, drinks=0, tips=0, final_budget=0, barman: Barman=None):
+        self.amount = amount  # The amount to be betted is chosen at random according to some rules. It is used in the Roulette file
+        self.final_budget = final_budget  # Amount won by the customer
+        self.budget = budget
+        self.drinks = drinks  # Total expenditure on drinks
+        self.tips = tips  # Total tips given
+        self.barman = barman  # Assigned barman
+        self.initial_budget = budget  # The initial budget is set at random between an upper and a lower bound
+
+    def set_initial_budget(self):  # The function sets the initial budget at random between two bounds
+        self.budget = randint(self.initial_lower_bound, self.initial_upper_bound)
+        self.initial_budget = self.budget  # Initially the budget correspond to the initial_budget and it will get updated later on
+
+    def give_tip(self):  # The function assigns a random tip to the barman and deduce it from the customer's budget
+        if self.budget >= 20:
+            tip = randint(0, 20)
+            self.barman.tips += tip
+            self.tips += tip
+            self.budget -= tip
+
+    def buy_drinks(self):  # The function allows the customer to randomly buy 1 or 2 drinks from the barman
+        if self.budget >= 60:
+            drink_price = random.choice([20, 40])
+            self.drinks += drink_price
+            self.barman.sales += drink_price
+            self.budget -= drink_price
+            self.give_tip()
+            return drink_price
+        else:
+            self.drinks += 0
+            return 0
+
+    def set_final_budget(self):  # The function determines the amount won by the customer
+        self.final_budget = self.budget - self.initial_budget
 
 
 class Returning(Customer):
