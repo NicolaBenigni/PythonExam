@@ -26,14 +26,31 @@ class Table(object):  # Start with Table as a class, Roulette is going to be a s
         valid_bets = [amount >= self.min_amount for amount in betted_amounts]
         return valid_bets
 
-#    def simulate_game(self, bets, betted_amounts):  # The function can take a list of bets and betted amounts and return the amount won by casino and costumers automatically taking into account the type of game played
+    def simulate_game(self, bets, betted_amounts):  # The function can take a list of bets and betted amounts and return the amount won by casino and costumers automatically taking into account the type of game played
+        print("Simulating game...")
 
+    def place_random_amount(self):  # The function bets random amounts for each customers. The function place_amount is defined in the customers file and depends on the type of customer
+        [x.place_amount(self.min_amount) for x in self.customers]
 
+    bet_range = range(0)  # Just define bet_range. Its true value will be assigned in the subclasses
 
+    def simulate_game_round(self):  # The function simulate the round of a game at a table, which include sharing the profit with the croupier, collecting the remaining profit, paying out the awards to the customers
+        self.place_random_amount()
+        bets = [random.randint(self.bet_range[0], self.bet_range[1]) for _ in self.customers]  # The function randomly chooses bets in the correct bet range for each customer taking into account the type of game played
+        betted_amounts = [x.amount for x in self.customers]  # The function recovers a list of betted amounts per customers
+        game_outcome = self.simulate_game(bets, betted_amounts)
+        if game_outcome[0] > 0:
+            self.croupier.commission += int(0.005 * game_outcome[0])  # The croupier shares the profit from the game
+            self.profit += int(game_outcome[0] * 0.995)
+        else:
+            self.profit += game_outcome[0]  # The croupier does not share the losses, the casino has to bear them whole
+        for x, y in zip(self.customers, game_outcome[1]):  # Each customer win his award
+            x.budget += y
+        return game_outcome[1]  # Returns list of values won by customers
 
 
 class Roulette(Table):
-#    bet_range = range(0, 36)
+    bet_range = range(0, 36)
 
 #    def minimum_amount(self):  # The function determines the minimum amount to be betted in a roulette game
 #        self.min_amount = random.choice([50, 100, 200])
@@ -63,7 +80,7 @@ class Roulette(Table):
 # Create a craps game
 
 class Craps(Table):
-#    bet_range = range(2, 12)
+    bet_range = range(2, 12)
 
 #    def minimum_amount(self):  # The function determines the minimum amount to be betted in a craps game
 #        self.min_amount = random.choice([0, 25, 50])
